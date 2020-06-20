@@ -1,0 +1,71 @@
+html {
+    font-family: sans-serif;
+  }
+
+  body{
+      text-align: center;
+      margin-top:10%;
+  }
+  
+  div:first-of-type {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    margin-bottom: 5px;
+  }
+  
+  label {
+    margin-right: 15px;
+    line-height: 32px;
+  }
+
+  #contactChoice1{
+      display:flex;
+      /* flex-direction: column; */
+  }
+  .flex {
+      display: flex;
+      flex-direction: column;
+  }
+  
+  input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+  
+    border: 2px solid #999;
+    transition: 0.2s all linear;
+    margin-right: 5px;
+  
+    position: relative;
+    top: 4px;
+  }
+  
+  input:checked {
+    border: 6px solid darkcyan;
+  }
+  
+  button,
+  legend {
+    color: white;
+    background-color: darkcyan;
+    padding: 5px 10px;
+    border-radius: 0;
+    border: 0;
+    font-size: 14px;
+  }
+  
+  button:hover,
+  button:focus {
+    color: whitesmoke;
+  }
+  
+  button:active {
+    background-color: white;
+    color: black;
+    outline: 1px solid black;
+  }
