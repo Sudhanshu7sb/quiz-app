@@ -9,7 +9,8 @@ class Question{
         this.correctAnswerIndex = correctAnswerIndex;
     }
 
-    isCorrect(userAnswer){
+    isCorrect(userAnswer){  
+        // console.log("hi");      
         return this.options[this.correctAnswerIndex];
     }
 
@@ -24,9 +25,10 @@ class Question{
         <div>
             
                 ${this.options.map(
-                    (option) => `<input type="radio" id="contactChoice1"
-                    name=${this.title} value=${option} >
-                        <label for="contactChoice3">${option}</label>`
+                    (option) =>  `
+                    <input type="radio" id="contactChoice1" name=${this.title} value=${option}  class="userAnswer">
+                    <label for="contactChoice3">${option}</label>
+                    `
                         ).join("")}
                 
           
@@ -65,6 +67,7 @@ let questionFive = new Question(
     ["link","a","href","ref"],
     1
     );
+
     
     
 questionOne.createUI();
@@ -72,6 +75,10 @@ questionTwo.createUI();
 
 let root = document.getElementById("root");
 let nextBtn = document.querySelector(".btn");
+let progress = document.querySelector(".progress");
+let p = document.querySelector("p");
+let score = document.querySelector("h3");
+
 
 class Quiz{
     constructor(rootElm,nextElm,questions){
@@ -80,34 +87,52 @@ class Quiz{
         this.nextElm  = nextElm;
         this.activeQuestionIndex = 0;
         this.score = 0;
+        
+        progress.max = this.questions.length;
+        progress.value = 0;
+        p.innerText = ` Question : ${this.activeQuestionIndex+1} / ${this.questions.length}`;
+        
     }
-
+    
     nextQuestion(index){
-       this.activeQuestionIndex ++;
-       this.rootElm.innerHTML = this.questions[
-        this.activeQuestionIndex
-    ].createUI();
-    // if(this.activeQuestionIndex > this.questions.length){
-    //     root.innerHTML = "";
-    //     console.log(root.innerHTML);
-    // }
-    
-    
-    
+        //check whether it has reached end of the array
+        if(this.activeQuestionIndex < this.questions.length-1){
+            this.activeQuestionIndex ++;
+            progress.value++;
+            p.innerText = ` Question : ${this.activeQuestionIndex+1} / ${this.questions.length}`;
+            this.rootElm.innerHTML = this.questions[
+            this.activeQuestionIndex
+            ].createUI();
+        }
+        else {
+            root.innerHTML = "";
+            progress.outerHTML = "";
+            p.outerHTML = "";
+            nextBtn.outerHTML = "";
+            score.textContent = "Score : " +this.activeQuestionIndex +" / " +this.questions.length;
+        }
         
     }
 
     updateScore(index){
         this.score++;
         console.log(this.score);
+      
     }
 
     rootUI(){
-        // console.log(this.nextElm);
-      
-        
-        this.nextElm.addEventListener('click', () => this.nextQuestion(this.activeQuestionIndex));
+        this.nextElm.addEventListener('click', () => {
+            const answer = document.querySelector(".userAnswer:checked");
+            if(!answer) return
+            const value = answer;
+            // const value = answer.value;
+            // console.log(value);
+            console.log(this.questions[this.activeQuestionIndex].correctAnswerIndex);
+            
+            this.nextQuestion(this.activeQuestionIndex)
+        });
         this.nextElm.addEventListener('click', () => this.updateScore(this.activeQuestionIndex));
+        
         
         this.rootElm.innerHTML = this.questions[
             this.activeQuestionIndex
