@@ -9,9 +9,9 @@ class Question{
         this.correctAnswerIndex = correctAnswerIndex;
     }
 
-    isCorrect(userAnswer){  
-        // console.log("hi");      
-        return this.options[this.correctAnswerIndex];
+    isCorrect(userAnswer){      
+        return (this.correctAnswerIndex === userAnswer);
+       
     }
 
     getCorrectAnswer(){
@@ -25,9 +25,9 @@ class Question{
         <div>
             
                 ${this.options.map(
-                    (option) =>  `
-                    <input type="radio" id="contactChoice1" name=${this.title} value=${option}  class="userAnswer">
-                    <label for="contactChoice3">${option}</label>
+                    (option,index) =>  `
+                    <input type="radio" id="contactChoice-${index}" name="option" value=${index}  class="userAnswer">
+                    <label for="contactChoice-${index}">${option}</label>
                     `
                         ).join("")}
                 
@@ -78,6 +78,8 @@ let nextBtn = document.querySelector(".btn");
 let progress = document.querySelector(".progress");
 let p = document.querySelector("p");
 let score = document.querySelector("h3");
+let error = document.querySelector(".error"); 
+let retake = document.querySelector(".retake");
 
 
 class Quiz{
@@ -92,6 +94,7 @@ class Quiz{
         progress.value = 0;
         p.innerText = ` Question : ${this.activeQuestionIndex+1} / ${this.questions.length}`;
         
+        
     }
     
     nextQuestion(index){
@@ -99,6 +102,7 @@ class Quiz{
         if(this.activeQuestionIndex < this.questions.length-1){
             this.activeQuestionIndex ++;
             progress.value++;
+            retake.display = "none";
             p.innerText = ` Question : ${this.activeQuestionIndex+1} / ${this.questions.length}`;
             this.rootElm.innerHTML = this.questions[
             this.activeQuestionIndex
@@ -109,29 +113,46 @@ class Quiz{
             progress.outerHTML = "";
             p.outerHTML = "";
             nextBtn.outerHTML = "";
-            score.textContent = "Score : " +this.activeQuestionIndex +" / " +this.questions.length;
+            error.outerHTML = "";
+            console.log(this.score);
+            score.textContent = "Score : " + this.score +" / " +this.questions.length;
+            retake.classList.add("showRetake");
+            function reload(){
+                window.location.reload();
+            }
+            retake.addEventListener("click",reload);
         }
         
     }
 
-    updateScore(index){
+    updateScore(){
         this.score++;
-        console.log(this.score);
-      
+        // console.log((this.questions[this.activeQuestionIndex].correctAnswerIndex) == answer.value);
+        // console.log("correctAns : " + this.questions[this.activeQuestionIndex].correctAnswerIndex);
     }
 
     rootUI(){
         this.nextElm.addEventListener('click', () => {
-            const answer = document.querySelector(".userAnswer:checked");
-            if(!answer) return
-            const value = answer;
-            // const value = answer.value;
-            // console.log(value);
-            console.log(this.questions[this.activeQuestionIndex].correctAnswerIndex);
-            
+            const answer = document.querySelector(".userAnswer:checked"); 
+             
+                     
+            if(!answer) {
+                error.innerText = "Choose Any One!!";
+                return
+            }
+            console.log("NO : " +  answer.value);
+            // "returning a string value so we are converting it to number"
+            if((this.questions[this.activeQuestionIndex].isCorrect(+answer.value))){
+                console.log( "Yes : " +answer.value);
+                error.innerHTML = "";
+                this.updateScore();
+            }          
+           
+            // calling nextQuestion with activeQuestionIndex
             this.nextQuestion(this.activeQuestionIndex)
+            
         });
-        this.nextElm.addEventListener('click', () => this.updateScore(this.activeQuestionIndex));
+       
         
         
         this.rootElm.innerHTML = this.questions[

@@ -6,7 +6,10 @@ html {
       /* text-align: center; */
       width:35%;
       margin:10% auto;
+      padding:1rem;
       box-sizing: border-box;
+      /* -webkit-box-shadow: 1px 3px 10px 10px rgba(0,0,0,0.5);  */
+      box-shadow: 1px 3px 10px 10px rgba(55,182,103,0.5);
   }
   
   div:first-of-type {
@@ -16,6 +19,9 @@ html {
     margin-bottom: 5px;
   }
 
+  h1{
+      text-align: center;
+  }
   p{
       margin: 0 1rem;
   }
@@ -110,4 +116,20 @@ html {
     background-color: white;
     color: black;
     outline: 1px solid black;
+  }
+
+  .retake{
+      display:none;
+  }
+  .showRetake{
+      display: block;
+  }
+
+  .error{
+      color:red;
+      margin-bottom:1rem;
+  }
+
+  h3{
+      text-align: center;
   }
