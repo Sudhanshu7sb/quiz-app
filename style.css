@@ -133,3 +133,20 @@ html {
   h3{
       text-align: center;
   }
+
+  @media screen and (max-width:768px){
+      body{
+          width:80%;
+          
+          box-sizing: border-box;
+      }
+      .progress[value]::-webkit-progress-bar{
+        background-color: whitesmoke;
+        
+        height :7px;
+        width: 300px;
+    
+        
+    }
+
+  }
