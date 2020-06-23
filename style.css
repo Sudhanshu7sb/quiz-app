@@ -155,9 +155,31 @@ html {
           
           box-sizing: border-box;
       }
+      
       .progress{
-       display:none;   
+        margin:1rem auto;
+        padding:0 1rem;
+        
       }
+  
+  
+    .progress[value]{
+      -webkit-appearance: none;
+      appearance: none;
+      
+  }
+  .progress[value]::-webkit-progress-bar{
+      background-color: whitesmoke;
+      
+      height :4px;
+      width: 200px;
+  
+      
+  }
+  .progress[value]::-webkit-progress-value{
+      background-color:#37b667;   
+  }
+  
 
       .start,
       .retake,
