@@ -1,33 +1,50 @@
 // - Title of the question
 // - Options of the question
 // - Correct answer
+let start = document.querySelector(".start");
+let quizComponent = document.querySelector(".quizComponent");
+quizComponent.style.display = "none";
+start.addEventListener("click", handleDisplay);
+// localStorage.getItem('index') || [];
+
+
+function handleDisplay() {
+    start.outerHTML = "";
+    quizComponent.style.display="block";
+}
+
 
 class Question{
     constructor(title,options,correctAnswerIndex){
         this.title = title;
         this.options = options;
         this.correctAnswerIndex = correctAnswerIndex;
+        // localStorage.setItem("question",JSON.stringify(Question));
+        // localStorage.setItem("array",JSON.stringify(this.questions));    
+        // let parse = JSON.parse(localStorage["question"]);
     }
-
+    
     isCorrect(userAnswer){      
         return (this.correctAnswerIndex === userAnswer);
-       
+        
     }
-
+    
     getCorrectAnswer(){
         return this.options[this.correctAnswerIndex];
     }
-
+    
     createUI(){
         return  `<form>
         <fieldset>
         <legend>${this.title}</legend>
-        <div>
+        <div class="option-box">
             
                 ${this.options.map(
                     (option,index) =>  `
+                    <div class = "options">
                     <input type="radio" id="contactChoice-${index}" name="option" value=${index}  class="userAnswer">
                     <label for="contactChoice-${index}">${option}</label>
+                    </div>
                     `
                         ).join("")}
                 
@@ -42,31 +59,58 @@ class Question{
 
 
 let questionOne = new Question(
-    "Which HTML element is used for displaying the biggest header",
-    ["h1","h2","h4","h7"],
-    0
+    "Inside which HTML element do we put the Javascript?",
+    ["&ltjs&gt","&ltjavascript&gt","&ltscript&gt","&ltscripting&gt"],
+    2
 );
 
 let questionTwo = new Question(
-    "Which element is used to provide title of the page",
-    ["h1","p","title","i"],
-    2
-    );
-let questionThree = new Question(
-    "Which element is used to emphasize text?",
-    ["h1","p","em","i"],
-    2
-    );
-let questionFour = new Question(
-    "How many heading elements are there in HTML5?",
-    ["1","3","5","6"],
+    "Which is the correct syntax to display'Javascript' using alertbox in Javascript?",
+    ["alertbox('Javascript')","msg('Javascript')","msgbox('Javascript')","alert('Javascript')"],
     3
     );
-let questionFive = new Question(
-    "Which tag is used to link pages?",
-    ["link","a","href","ref"],
+let questionThree = new Question(
+    "Which is the correct syntax for referring to an external script called 'script.js'",
+    ["&lt script src='geek.js' &gt","&lt script href='geek.js' &gt","&lt script ref='geek.js' &gt","&lt script name='geek.js' &gt"],
+    0
+    );
+let questionFour = new Question(
+    "The external JavaScript file must contain &lt script &gt tag. True or False?",
+    ["True","False"],
     1
     );
+let questionFive = new Question(
+    "Which of the following is not a reserved word in JavaScript?",
+    [" interface","throws","program","short"],
+    2
+    );
+
+let questionSix = new Question(
+    "What is the syntax for creating a function in JavaScript named as jsDev?",
+    ["function = jsDev()","function jsDev()","function := jsDev()","function : jsDev()"],
+    1
+    );
+let questionSeven = new Question(
+    "How is the function named 'jSDev' called in JavaScript?",
+    [" call jSDev();","call function jSDev();","jSDev()","function : jSdev()"],
+    2
+    );
+let questionEight = new Question(
+    " What is the correct syntax for adding comments in JavaScript?",
+    [" &lt!–This is a comment–&gt","//This is a comment","**This is a comment**"],
+    1
+    );
+let questionNine = new Question(
+    "What is the JavaScript syntax for printing values in Console?",
+    ["print(5)","console.log(5);"," console.print(5);","print.console(5);"],
+    1
+    );
+let questionTen = new Question(
+    "What is the method in JavaScript used to remove the whitespace at the beginning and end of any string ?",
+    ["strip()","trim()","stripped()","trimmed()"],
+    1
+    );
+
 
     
     
@@ -74,6 +118,7 @@ questionOne.createUI();
 questionTwo.createUI();
 
 let root = document.getElementById("root");
+
 let nextBtn = document.querySelector(".btn");
 let progress = document.querySelector(".progress");
 let p = document.querySelector("p");
@@ -85,6 +130,10 @@ let retake = document.querySelector(".retake");
 class Quiz{
     constructor(rootElm,nextElm,questions){
         this.questions = questions;
+        // localStorage.setItem("array",JSON.stringify(this.questions));    
+        // let parse = JSON.parse(localStorage["array"]);//now parse == this.questions in localStorage
+        // console.log(parse);
+           
         this.rootElm  = rootElm;
         this.nextElm  = nextElm;
         this.activeQuestionIndex = 0;
@@ -93,7 +142,7 @@ class Quiz{
         progress.max = this.questions.length;
         progress.value = 0;
         p.innerText = ` Question : ${this.activeQuestionIndex+1} / ${this.questions.length}`;
-        
+        // console.log(`${this.activeQuestionIndex}`);
         
     }
     
@@ -107,6 +156,10 @@ class Quiz{
             this.rootElm.innerHTML = this.questions[
             this.activeQuestionIndex
             ].createUI();
+            console.log(this.activeQuestionIndex);
+            // this.activeQuestionIndex++;
+            // localStorage.setItem('index',this.activeQuestionIndex);
+            
         }
         else {
             root.innerHTML = "";
@@ -114,7 +167,7 @@ class Quiz{
             p.outerHTML = "";
             nextBtn.outerHTML = "";
             error.outerHTML = "";
-            console.log(this.score);
+            // console.log(this.score);
             score.textContent = "Score : " + this.score +" / " +this.questions.length;
             retake.classList.add("showRetake");
             function reload(){
@@ -127,6 +180,8 @@ class Quiz{
 
     updateScore(){
         this.score++;
+        // localStorage.setItem('score', this.score++);
+        // localStorage.setItem("index", this.activeQuestionIndex);
         // console.log((this.questions[this.activeQuestionIndex].correctAnswerIndex) == answer.value);
         // console.log("correctAns : " + this.questions[this.activeQuestionIndex].correctAnswerIndex);
     }
@@ -140,14 +195,13 @@ class Quiz{
                 error.innerText = "Choose Any One!!";
                 return
             }
-            console.log("NO : " +  answer.value);
+            
             // "returning a string value so we are converting it to number"
             if((this.questions[this.activeQuestionIndex].isCorrect(+answer.value))){
-                console.log( "Yes : " +answer.value);
                 error.innerHTML = "";
                 this.updateScore();
-            }          
-           
+            }
+            
             // calling nextQuestion with activeQuestionIndex
             this.nextQuestion(this.activeQuestionIndex)
             
@@ -170,7 +224,15 @@ let quiz = new Quiz(root,nextBtn,[
     questionThree,
     questionFour,
     questionFive,
+    questionSix,
+    questionSeven,
+    questionEight,
+    questionNine,
+    questionTen,
 ]);
-
 quiz.rootUI();
+
+
+
+
 
